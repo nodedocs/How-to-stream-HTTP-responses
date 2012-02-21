@@ -11,7 +11,7 @@
 	],
 	"difficulty": 5,
 	"categories": [
-	  ["Streaming"],
+	  ["Streams"],
 	  ["HTTP", "Client"],
 	  ["HTTP", "Server"]
 	]
