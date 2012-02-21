@@ -9,5 +9,10 @@
 		  "url": "https://github.com/pgte"
     }
 	],
-	"difficulty": 2
+	"difficulty": 5,
+	"categories": [
+	  ["Streaming"],
+	  ["HTTP", "Client"],
+	  ["HTTP", "Server"]
+	]
 }
