@@ -6,29 +6,31 @@ As you may have noticed by now, almost everything is a stream in Node, and an HT
 
 Say, for instance, that you want to save the Nodejitsu logo into a local file.
 
-    var http = require('http');
-	var fs   = require('fs');
+```javascript
+var http = require('http');
+var fs   = require('fs');
 
-	var options = {
-	  host: 'nodejitsu.com',
-	  path: '/img/header-logo-grey.png'
-	};
-	var targetFilePath = 'nodejitsu_logo.png';
+var options = {
+  host: 'nodejitsu.com',
+  path: '/img/header-logo-grey.png'
+};
+var targetFilePath = 'nodejitsu_logo.png';
 
-	function responseCallback(response) {
+function responseCallback(response) {
 
-	  console.log('got response from the server. status:', response.statusCode, ', headers:', response.headers);
-	  var targetFile = fs.createWriteStream(targetFilePath);
-	  response.pipe(targetFile);
+  console.log('got response from the server. status:', response.statusCode, ', headers:', response.headers);
+  var targetFile = fs.createWriteStream(targetFilePath);
+  response.pipe(targetFile);
 
-	  response.on('end', function() {
-	  	console.log('wrote reply into', targetFilePath);
-	  });
-	}
+  response.on('end', function() {
+  	console.log('wrote reply into', targetFilePath);
+  });
+}
 
-	var request = http.request(options, responseCallback);
+var request = http.request(options, responseCallback);
 
-	request.end();
+request.end();
+```
 
 What we're doing here is: as soon as the server replies, we open a file in write mode, obtaining a writable stream. Then we stream the server response body into that file by using the `sourceStream.pipe(targetStream)` pattern.
 
@@ -54,25 +56,27 @@ If you open the file `nodejitsu_logo.png` with an image viewer you should see No
 
 You can also easily setup a server which the only objective is to serve the Nodejitsu logo, piped from the Nodejitsu website into the server response:
 
-    var http = require('http');
+```javascript
+var http = require('http');
 
-	var options = {
-	  host: 'nodejitsu.com',
-	  path: '/img/header-logo-grey.png'
-	};
+var options = {
+  host: 'nodejitsu.com',
+  path: '/img/header-logo-grey.png'
+};
 
-	var server = http.createServer(function(req, res) {
+var server = http.createServer(function(req, res) {
 
-      res.setHeader('Content-Type', 'image/png');
+  res.setHeader('Content-Type', 'image/png');
 
-	  function responseCallback(response) {
-		response.pipe(res);
-	  }
+  function responseCallback(response) {
+	response.pipe(res);
+  }
 
-	  http.request(options, responseCallback).end();
-	});
+  http.request(options, responseCallback).end();
+});
 
-	server.listen(8080);
+server.listen(8080);
+```
 
 First we are setting up a server and making it listen on port 8080.
 
